@@ -279,7 +279,7 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 	if(htim == &htim7){
-    //100kHz(1usに一回)
+    //1Mhz(1usに一回)
 		if(HAL_GPIO_ReadPin(IRS_INPUT_GPIO_Port, IRS_INPUT_Pin)){
 			if(before_high == false){
 				sensor_high_counter = 0;
