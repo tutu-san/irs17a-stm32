@@ -65,7 +65,7 @@ int __io_putchar(int ch) {
     return ch;
 }
 bool before_high = false;
-int counter = 0;
+int sensor_high_counter = 0;
 /* USER CODE END 0 */
 
 /**
@@ -279,18 +279,20 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 	if(htim == &htim7){
+    //100kHz(1usに一回)
 		if(HAL_GPIO_ReadPin(IRS_INPUT_GPIO_Port, IRS_INPUT_Pin)){
 			if(before_high == false){
-				counter = 0;
+				sensor_high_counter = 0;
 				before_high = true;
 				return;
 			}
-			counter++;
+			sensor_high_counter++;
 		}
 		if(!(HAL_GPIO_ReadPin(IRS_INPUT_GPIO_Port, IRS_INPUT_Pin)) && before_high == true){
-			printf("%d, %f\n\r", counter, ((float)counter - 273.0f) * 1.0f);
+			printf("%d, %f\n\r", sensor_high_counter, ((float)sensor_high_counter - 273.0f) * 1.0f);
 			before_high = false;
 		}
+    //printf("test\n\r"); ほんとに1usごとに割り込みできているか見たかったが、うまく見えていない
 	}
 }
 /* USER CODE END 4 */
